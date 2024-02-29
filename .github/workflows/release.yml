@@ -40,7 +40,6 @@ jobs:
       - name: Build apps
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.event.release.tag_name }}
         run: |
-          electronize build /target win /p:Version=${ TAG#v }
-          electronize build /target linux /p:Version=${ TAG#v }
+          electronize build /target win /p:Version=${ GITHUB_REF_NAME#v }
+          electronize build /target linux /p:Version=${ GITHUB_REF_NAME#v }

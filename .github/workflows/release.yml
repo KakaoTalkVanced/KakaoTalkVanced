@@ -38,9 +38,23 @@ jobs:
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
       - name: Build apps
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           electronize build /target win
           electronize build /target linux
+          ls ./bin/Desktop
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
       - name: Upload assets to release
         uses: csexton/release-asset-action@v3

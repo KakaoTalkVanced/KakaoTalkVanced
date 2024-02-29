@@ -10,7 +10,6 @@ on:
 
 jobs:
   Release:
-    if: github.event.pull_request.merged == true
     permissions: write-all
     runs-on: ubuntu-22.04
     steps:

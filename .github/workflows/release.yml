@@ -42,5 +42,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=${{ github.event.release.tag_name }}
-          electronize build /target win /p:Version=${ GITHUB_ACTION_PATH##v }
-          electronize build /target linux /p:Version=${ GITHUB_ACTION_PATH##v }
+          electronize build /target win /p:Version=${ GITHUB_REF_NAME##v }
+          electronize build /target linux /p:Version=${ GITHUB_REF_NAME##v }

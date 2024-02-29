@@ -41,5 +41,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          electronize build /target win /p:Version=${{ github.ref }}
-          electronize build /target linux /p:Version=${{ github.ref }}
+          electronize build /target win /p:Version=${{ github.event.release.tag_name#v }}
+          electronize build /target linux /p:Version=${{ github.event.release.tag_name#v }}

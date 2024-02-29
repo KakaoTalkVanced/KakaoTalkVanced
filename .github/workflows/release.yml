@@ -13,14 +13,6 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-22.04
     steps:
-      - name: Context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
-      - name: Verify upload url
-        run: echo ${{ github.event.client_payload }}
-
       - uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4

@@ -36,5 +36,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          electronize build /target win
-          electronize build /target linux
+          electronize build /target win /electron-params "--publish=always"
+          electronize build /target linux /electron-params "--prune=true --publish=always"

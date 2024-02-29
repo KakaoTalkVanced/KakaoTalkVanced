@@ -1,13 +1,16 @@
 name: release-electron
 
 on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+  pull_request:
+    branches: 
+      - main
+    types:
+      - closed
+  workflow_dispatch:
 
 jobs:
   Release:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     steps:
       - name: Context
@@ -41,5 +44,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          electronize build /target win /p:Version=${GITHUB_REF_NAME#v}
-          electronize build /target linux /p:Version=${GITHUB_REF_NAME#v}
+          electronize build /target win
+          electronize build /target linux

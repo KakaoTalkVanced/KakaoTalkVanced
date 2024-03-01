@@ -36,13 +36,14 @@ jobs:
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
           electronize build /target osx /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
-          if ! test -f "./bin/Desktop/*.dmg"; then
+          ls ./bin/Desktop/
+          if [ ! -f ./bin/Desktop/*.dmg ]; then
             echo "::error::The mac target assets were not created."
           fi
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
-          if ! test -f "./bin/Desktop/*.appimage"; then
+          if [ ! -f ./bin/Desktop/*.appimage ]; then
             echo "::error::The linux target assets were not created."
           fi

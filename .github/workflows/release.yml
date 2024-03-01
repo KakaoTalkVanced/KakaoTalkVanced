@@ -33,8 +33,6 @@ jobs:
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
       - name: Build apps
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           electronize build /target win /electron-params "--publish=always"
-          electronize build /target linux /electron-params "--prune=true --publish=always"
+          electronize build /target linux /electron-params "--publish=always"

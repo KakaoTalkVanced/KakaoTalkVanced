@@ -29,9 +29,9 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           electronize build /target win /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
-          if not exist ./bin/Desktop/*.exe (
+          if (!(Test-Path ./bin/Desktop/*.exe)) {
             exit 1
-          )
+          }
       - name: Build macos target
         if: ${{ matrix.os == 'macos-latest' }}
         run: |

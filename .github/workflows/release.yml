@@ -1,5 +1,4 @@
 name: release-electron
-permissions: write-all
 
 on:
   pull_request:
@@ -12,6 +11,7 @@ on:
 jobs:
   Release:
     runs-on: ubuntu-22.04
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET

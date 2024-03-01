@@ -28,7 +28,7 @@ jobs:
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          electronize build /target win /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+          electronize build /target win /p:ProductVersion=$GITHUB_REF_NAME.replace('v','') /electron-params "-p=never"
           if (!(Test-Path ./bin/Desktop/*.exe)) {
             echo "::error::The win target assets were not created."
           }

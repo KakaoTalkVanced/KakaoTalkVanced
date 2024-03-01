@@ -38,3 +38,4 @@ jobs:
         run: |
           electronize build /target win
           electronize build /target linux
+          ls ./bin/Desktop/

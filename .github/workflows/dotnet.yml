@@ -9,9 +9,7 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: home-server
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET

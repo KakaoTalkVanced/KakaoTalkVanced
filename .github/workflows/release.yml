@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
 
 jobs:
   Release:
@@ -28,10 +27,22 @@ jobs:
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
-        run: electronize build /target win /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+        run: |
+          electronize build /target win /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+          if ! test -f "./bin/Desktop/*.exe"; then
+            exit 1
+          fi
       - name: Build macos target
         if: ${{ matrix.os == 'macos-latest' }}
-        run: electronize build /target osx /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+        run: |
+          electronize build /target osx /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+          if ! test -f "./bin/Desktop/*.dmg"; then
+            exit 1
+          fi
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+        run: |
+          electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+          if ! test -f "./bin/Desktop/*.appimage"; then
+            exit 1
+          fi

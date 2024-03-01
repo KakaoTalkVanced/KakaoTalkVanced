@@ -8,8 +8,6 @@ on:
 jobs:
   Release:
     runs-on: ubuntu-22.04
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -27,12 +25,10 @@ jobs:
           sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key &&
           sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources &&
           sudo apt update && sudo apt install --install-recommends winehq-stable
-          
+
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
-      - name: Build apps & Publish
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build apps
         run: |
-          electronize build /target win
-          electronize build /target linux
+          electronize build /target win /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
+          electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"

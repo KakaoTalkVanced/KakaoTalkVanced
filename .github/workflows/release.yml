@@ -34,11 +34,11 @@ jobs:
         run: dotnet tool install ElectronNET.CLI -g
         
       - name: Build win target
-        if: ${{ matrix.os == windows-latest }}
+        if: ${{ matrix.os == 'windows-latest' }}
         run: electronize build /target win /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
       - name: Build macos target
-        if: ${{ matrix.os == macos-latest }}
+        if: ${{ matrix.os == 'macos-latest' }}
         run: electronize build /target osx /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
       - name: Build linux target
-        if: ${{ matrix.os == ubuntu-latest }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"

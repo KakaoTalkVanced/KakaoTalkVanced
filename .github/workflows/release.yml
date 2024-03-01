@@ -3,7 +3,7 @@ name: release-electron
 on:
   push:
     tags:
-      - v*
+      - 'v*'
 
 jobs:
   Release:

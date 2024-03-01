@@ -2,7 +2,7 @@ name: release-electron
 
 on:
   pull_request:
-    branches: 
+    branches:
       - main
     types:
       - closed
@@ -11,6 +11,7 @@ on:
 jobs:
   Release:
     runs-on: ubuntu-22.04
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -31,9 +32,9 @@ jobs:
           
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
-      - name: Build apps
+      - name: Build apps & Publish
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          electronize build /target win /electron-params "--publish=always"
-          electronize build /target linux /electron-params "--publish=always"
+          electronize build /target win /electron-params
+          electronize build /target linux /electron-params

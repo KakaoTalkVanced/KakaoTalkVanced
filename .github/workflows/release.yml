@@ -1,17 +1,15 @@
 name: release-electron
 
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
-  workflow_dispatch:
+  push:
+    tags:
+      - v*
 
 jobs:
   Release:
     runs-on: ubuntu-22.04
-    permissions: write-all
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -38,4 +36,3 @@ jobs:
         run: |
           electronize build /target win
           electronize build /target linux
-          ls ./bin/Desktop/

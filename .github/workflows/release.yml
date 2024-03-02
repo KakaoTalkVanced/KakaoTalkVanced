@@ -23,11 +23,17 @@ jobs:
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
 
+      - name: Get JSON Property
+        id: read_json
+        uses: notiz-dev/github-action-json-property@v0.2.0
+        with:
+          path: './${{ github.event.repository.name }}/electron.manifest.json'
+          prop_path: 'build.buildVersion'
+  
       - name: Set environment variables
         run: |
-          cat ./${{ github.event.repository.name }}/electron.manifest.json | jq '.build.buildVersion'
           echo "$REPO_NAME=${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "$BUILD_VERSION=$buildVersion" >> $GITHUB_ENV
+          echo "$BUILD_VERSION=${{steps.read_json.outputs.propStr}}" >> $GITHUB_ENV
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}

@@ -26,8 +26,7 @@ jobs:
       - name: Read json file
         id: read_json
         run: |
-          ls
-          content=`cat ./${{ github.event.repository.name }}/electron.manifest.json}`
+          content=`cat ./${{ github.event.repository.name }}/electron.manifest.json`
           # the following lines are only required for multi line json
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"

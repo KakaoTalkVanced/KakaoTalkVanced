@@ -35,7 +35,6 @@ jobs:
         run: |
           electronize build /target win /electron-params "-p=never"
           if (-not [System.IO.File]::Exists("./bin/Desktop/${{ github.event.repository.name }} Setup ${{ steps.read_json.outputs.prop }}.exe")) {
-            echo ${{ github.event.repository.name }} Setup ${{ steps.read_json.outputs.prop }}.exe
             echo "::error::The win target assets were not created."; ls ./bin/Desktop/
           }
       - name: Build mac target
@@ -49,7 +48,6 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           electronize build /target linux /electron-params "-p=never"
-          if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${{ steps.read_json.outputs.prop }}.appimage ]; then
-            echo ${{ github.event.repository.name }}-${{ steps.read_json.outputs.prop }}.appimage
+          if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${{ steps.read_json.outputs.prop }}.AppImage ]; then
             echo "::error::The linux target assets were not created."; ls ./bin/Desktop/
           fi

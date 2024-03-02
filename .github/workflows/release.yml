@@ -30,30 +30,26 @@ jobs:
           path: './${{ github.event.repository.name }}/electron.manifest.json'
           prop_path: 'build.buildVersion'
       - name: Set environment variables
-        run: |
-          echo "REPO_NAME=${{ github.event.repository.name }}" >> "$GITHUB_ENV"
-          echo "BUILD_VERSION=${{ steps.read_json.outputs.prop }}" >> "$GITHUB_ENV"
+        run: echo "BUILD_VERSION=${{ steps.read_json.outputs.prop }}" >> "$GITHUB_ENV"
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          echo ${Env:REPO_NAME} Setup ${Env:BUILD_VERSION}
           electronize build /target win /electron-params "-p=never"
-          if (-not [System.IO.File]::Exists("./bin/Desktop/${Env:REPO_NAME} Setup ${Env:BUILD_VERSION}.exe")) {
+          if (-not [System.IO.File]::Exists("./bin/Desktop/${{ github.event.repository.name }} Setup ${{ env.BUILD_VERSION }}.exe")) {
             echo "::error::The win target assets were not created."
           }
       - name: Build mac target
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
           electronize build /target osx /electron-params "-p=never"
-          if [ ! -f ./bin/Desktop/${REPO_NAME}-${BUILD_VERSION}.dmg ]; then
+          if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${{ env.BUILD_VERSION }}.dmg ]; then
             echo "::error::The mac target assets were not created."
           fi
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-          echo ${REPO_NAME}-${{ env.BUILD_VERSION }}
           electronize build /target linux /electron-params "-p=never"
-          if [ ! -f ./bin/Desktop/${REPO_NAME}-${BUILD_VERSION}.appimage ]; then
+          if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${{ env.BUILD_VERSION }}.appimage ]; then
             echo "::error::The linux target assets were not created."
           fi

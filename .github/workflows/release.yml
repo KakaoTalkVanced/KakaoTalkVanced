@@ -30,7 +30,7 @@ jobs:
           path: './${{ github.event.repository.name }}/electron.manifest.json'
           prop_path: 'build.buildVersion'
       - name: Set environment variables
-        run: echo "BUILD_VERSION=${{ steps.read_json.outputs.prop }}" >> $GITHUB_ENV
+        run: echo "BUILD_VERSION=${{ steps.read_json.outputs.prop }}" >> "$GITHUB_ENV"
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}

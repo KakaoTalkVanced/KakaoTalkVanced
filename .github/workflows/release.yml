@@ -26,6 +26,7 @@ jobs:
       - name: Read json file
         id: read_json
         run: |
+          ls
           content=`cat ./${{ github.event.repository.name }}/electron.manifest.json}`
           # the following lines are only required for multi line json
           content="${content//'%'/'%25'}"
@@ -35,7 +36,6 @@ jobs:
           echo "::set-output name=packageJson::$content"
       - name: Set environment variables
         run: |
-          ls
           echo "$REPO_NAME=${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "$BUILD_VERSION=${{ fromJson(steps.set_var.outputs.packageJson).build.buildVersion }}" >> $GITHUB_ENV
         

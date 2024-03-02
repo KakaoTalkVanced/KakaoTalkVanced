@@ -25,7 +25,7 @@ jobs:
 
       - name: Set environment variables
         run: |
-          buildVersion=`cat ./${{ github.event.repository.name }}/electron.manifest.json | jq '.build.buildVersion'`
+          buildVersion=`cat ./${{ github.event.repository.name }}/electron.manifest.json | jq '.build'`
           echo "$REPO_NAME=${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "$BUILD_VERSION=$buildVersion" >> $GITHUB_ENV
         

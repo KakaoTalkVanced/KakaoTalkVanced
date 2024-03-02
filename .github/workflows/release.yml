@@ -37,7 +37,7 @@ jobs:
         run: |
           electronize build /target osx /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
           ls ./bin/Desktop/
-          if compgen -G "./bin/Desktop/*.dmg" == /dev/null; then
+          if ! ls /path/to/your/files* 1> /dev/null 2>&1; then
             echo "::error::The mac target assets were not created."
           fi
       - name: Build linux target

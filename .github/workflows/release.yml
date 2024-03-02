@@ -35,6 +35,7 @@ jobs:
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
+          echo ${{ github.event.repository.name }} Setup ${Env:BUILD_VERSION}
           electronize build /target win /electron-params "-p=never"
           if (-not [System.IO.File]::Exists("./bin/Desktop/${{ github.event.repository.name }} Setup ${Env:BUILD_VERSION}.exe")) {
             echo "::error::The win target assets were not created."
@@ -49,6 +50,7 @@ jobs:
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
+          echo ${{ github.event.repository.name }}-${BUILD_VERSION}
           electronize build /target linux /electron-params "-p=never"
           if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${BUILD_VERSION}.appimage ]; then
             echo "::error::The linux target assets were not created."

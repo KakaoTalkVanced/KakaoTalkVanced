@@ -44,6 +44,7 @@ jobs:
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
+          sudo rm -rf /home/runner/.cache/electron-builder/appimage/  # https://github.com/electron-userland/electron-builder/issues/8061
           electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
           if [ ! -f ./bin/Desktop/${GITHUB_REPOSITORY}-${GITHUB_REF_NAME#v}.appimage ]; then
             echo "::error::The linux target assets were not created."

@@ -24,6 +24,7 @@ jobs:
         run: dotnet tool install ElectronNET.CLI -g
 
       - name: Read JSON File
+        id: read_json
         run: |
           content=`cat ./${{ github.event.repository.name }}/${{ github.event.repository.name }}`
           # the following lines are only required for multi line json
@@ -31,7 +32,8 @@ jobs:
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
-          echo "$BUILD_VERSION=${{ fromJson(${content}).build.buildVersion }}" >> $GITHUB_ENV
+          echo "::set-output name=packageJson::$content"
+      - run: echo "$BUILD_VERSION=${{ fromJson(steps.set_var.outputs.packageJson).build.buildVersion }}" >> $GITHUB_ENV
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}

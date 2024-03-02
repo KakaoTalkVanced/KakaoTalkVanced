@@ -23,7 +23,7 @@ jobs:
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
 
-      - name: Read JSON File
+      - name: Read json file
         id: read_json
         run: |
           content=`cat ./${{ github.event.repository.name }}/${{ github.event.repository.name }}`
@@ -33,26 +33,29 @@ jobs:
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
           echo "::set-output name=packageJson::$content"
-      - run: echo "$BUILD_VERSION=${{ fromJson(steps.set_var.outputs.packageJson).build.buildVersion }}" >> $GITHUB_ENV
+      - name: Set environment variables
+        run: |
+          echo "$REPO_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+          echo "$BUILD_VERSION=${{ fromJson(steps.set_var.outputs.packageJson).build.buildVersion }}" >> $GITHUB_ENV
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           electronize build /target win /electron-params "-p=never"
-          if (-not [System.IO.File]::Exists("./bin/Desktop/${{ github.event.repository.name }} Setup ${Env:BUILD_VERSION}.exe")) {
+          if (-not [System.IO.File]::Exists("./bin/Desktop/${Env:REPO_NAME} Setup ${Env:BUILD_VERSION}.exe")) {
             echo "::error::The win target assets were not created."
           }
       - name: Build mac target
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
           electronize build /target osx /electron-params "-p=never"
-          if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${BUILD_VERSION}.dmg ]; then
+          if [ ! -f ./bin/Desktop/${REPO_NAME}-${BUILD_VERSION}.dmg ]; then
             echo "::error::The mac target assets were not created."
           fi
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           electronize build /target linux /electron-params "-p=never"
-          if [ ! -f ./bin/Desktop/${{ github.event.repository.name }}-${BUILD_VERSION}.appimage ]; then
+          if [ ! -f ./bin/Desktop/${REPO_NAME}-${BUILD_VERSION}.appimage ]; then
             echo "::error::The linux target assets were not created."
           fi

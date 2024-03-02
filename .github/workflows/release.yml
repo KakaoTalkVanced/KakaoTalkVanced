@@ -23,20 +23,11 @@ jobs:
       - name: Install ElectronNET.CLI
         run: dotnet tool install ElectronNET.CLI -g
 
-      - name: Read json file
-        id: read_json
-        run: |
-          content=`cat ./${{ github.event.repository.name }}/electron.manifest.json`
-          # the following lines are only required for multi line json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          # end of optional handling for multi line json
-          echo "packageJson=${content}" >> $GITHUB_OUTPUT
       - name: Set environment variables
         run: |
+          buildVersion=
           echo "$REPO_NAME=${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "$BUILD_VERSION=${{ fromJson(steps.read_json.outputs.packageJson).build.buildVersion }}" >> $GITHUB_ENV
+          echo "$BUILD_VERSION=`cat ./${{ github.event.repository.name }}/electron.manifest.json | jq '.build.buildVersion'`" >> $GITHUB_ENV
         
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}

@@ -28,8 +28,9 @@ jobs:
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          electronize build /target win /p:ProductVersion=$GITHUB_REF_NAME.replace('v', '') /electron-params "-p=never"
-          if (!(Test-Path ./bin/Desktop/*.exe)) {
+          $version = ${Env:GITHUB_REF_NAME}.replace('v', '')
+          electronize build /target win /p:ProductVersion=${version} /electron-params "-p=never"
+          if (![System.IO.File]::Exists("./bin/Desktop/${Env:GITHUB_REPOSITORY}-${version}.exe")) {
             echo "::error::The win target assets were not created."
           }
       - name: Build mac target
@@ -37,13 +38,13 @@ jobs:
         run: |
           electronize build /target osx /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
           ls ./bin/Desktop/
-          if ! ls /path/to/your/files* 1> /dev/null 2>&1; then
+          if [ ! -f ./bin/Desktop/${GITHUB_REPOSITORY}-${GITHUB_REF_NAME#v}.dmg ]; then
             echo "::error::The mac target assets were not created."
           fi
       - name: Build linux target
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           electronize build /target linux /p:ProductVersion=${GITHUB_REF_NAME#v} /electron-params "-p=never"
-          if compgen -G "./bin/Desktop/*.appimage" == /dev/null; then
+          if [ ! -f ./bin/Desktop/${GITHUB_REPOSITORY}-${GITHUB_REF_NAME#v}.appimage ]; then
             echo "::error::The linux target assets were not created."
           fi

@@ -30,7 +30,7 @@ jobs:
         run: |
           $version = ${Env:GITHUB_REF_NAME}.replace('v', '')
           electronize build /target win /p:ProductVersion=${version} /electron-params "-p=never"
-          if (not [System.IO.File]::Exists("./bin/Desktop/${Env:GITHUB_REPOSITORY} Setup ${version}.exe")) {
+          if (-not [System.IO.File]::Exists("./bin/Desktop/${Env:GITHUB_REPOSITORY} Setup ${version}.exe")) {
             echo "::error::The win target assets were not created."
           }
       - name: Build mac target

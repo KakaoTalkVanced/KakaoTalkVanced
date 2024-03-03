@@ -34,8 +34,8 @@ jobs:
         os: [windows-latest, macos-latest, ubuntu-latest]
     env:
       REPO_NAME: ${{ github.event.repository.name }}
-      VERSION: ${{ steps.set_version.outputs.version }}
-      TAG: ${{ format('v{0}', steps.set_version.outputs.version) }}
+      VERSION: ${{ needs.read-json.outputs.version }}
+      TAG: ${{ format('v{0}', needs.read-json.outputs.version) }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET

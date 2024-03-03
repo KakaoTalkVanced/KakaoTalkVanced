@@ -1,7 +1,11 @@
 name: release-electron
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'main'
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -80,7 +84,6 @@ jobs:
         env:
           FILE_PATH: ./bin/Desktop/${{ env.REPO_NAME }}-${{ env.VERSION }}.AppImage
         run: |
-          echo ${FILE_PATH}
           electronize build /target linux /electron-params "-p=never"
           if [ -f ${FILE_PATH} ]; then
             gh release upload ${TAG} ${FILE_PATH}

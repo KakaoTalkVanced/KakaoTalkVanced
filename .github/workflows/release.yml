@@ -81,7 +81,7 @@ jobs:
         env:
           FILE_PATH: ./bin/Desktop/${REPO_NAME}-${VERSION}.AppImage
         run: |
-          ${FILE_PATH}
+          echo ${FILE_PATH}
           electronize build /target linux /electron-params "-p=never"
           if [ -f ${FILE_PATH} ]; then
             gh release upload ${TAG} ${FILE_PATH}

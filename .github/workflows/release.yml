@@ -55,7 +55,7 @@ jobs:
       - name: Build win target
         if: ${{ matrix.os == 'windows-latest' }}
         env:
-          FILE_PATH: ./bin/Desktop/${Env:REPO_NAME} Setup ${Env:VERSION}.exe
+          FILE_PATH: ./bin/Desktop/${REPO_NAME} Setup ${VERSION}.exe
         run: |
           electronize build /target win /electron-params "-p=never"
           if ([System.IO.File]::Exists(${Env:FILE_PATH})) {

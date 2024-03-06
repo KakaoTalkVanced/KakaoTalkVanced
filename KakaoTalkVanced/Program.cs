@@ -31,7 +31,10 @@ app.MapRazorComponents<App>()
 
 await app.StartAsync();
 
-// Open the Electron-Window here
-await Electron.WindowManager.CreateWindowAsync();
+if (!app.Environment.IsDevelopment())
+{
+    // Open the Electron-Window here
+    await Electron.WindowManager.CreateWindowAsync();
+}
 
 app.WaitForShutdown();
